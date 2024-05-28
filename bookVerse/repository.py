@@ -1,4 +1,4 @@
-from .models import Book
+from .models.modelBook import Book
 
 class BookRepository:
     def get_all_books():
