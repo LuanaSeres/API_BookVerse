@@ -1,4 +1,5 @@
 from .models.modelBook import Book
+from .models.modelReview import Review
 
 class BookRepository:
     def get_all_books():
@@ -22,3 +23,27 @@ class BookRepository:
 
     def delete_book(book):
         book.delete()
+
+
+class ReviewRepository:
+    def get_all_reviews():
+        return Review.objects.all()
+
+    def get_review_by_id(review_id):
+        try:
+            return Review.objects.get(pk=review_id)
+        except Review.DoesNotExist:
+            return None
+
+    def create_review(data):
+        review = Review.objects.create(**data)
+        return review
+
+    def update_review(review, data):
+        for field, value in data.items():
+            setattr(review, field, value)
+        review.save()
+        return review
+
+    def delete_review(review):
+        review.delete()
