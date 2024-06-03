@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Review by {{ review.user.username }}</title>
+</head>
+<body>
+    <h1>Review for {{ review.book.title }}</h1>
+    <p>Review: {{ review.text }}</p>
+    <p>Rating: {{ review.rating }}</p>
+    <p>Created at: {{ review.created_at }}</p>
+    <a href="{% url 'review-update' review.id %}">Edit</a>
+    <a href="{% url 'review-delete' review.id %}">Delete</a>
+    <a href="{% url 'review-list' %}">Back to list</a>
+</body>
+</html>
