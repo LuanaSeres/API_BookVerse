@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Wishlist</title>
+</head>
+
+<body>
+  <h1>Wishlist</h1>
+  <ul>
+    {% for item in wishlist %}
+    <li>
+      <a href="{% url 'wishlist-detail' item.id %}">{{ item.book.title }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'wishlist-create' %}">Add New Item</a>
+</body>
+
+</html>
