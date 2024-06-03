@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>{{ item.book.title }}</title>
+</head>
+
+<body>
+  <h1>Wishlist Item: {{ item.book.title }}</h1>
+  <p>Book: {{ item.book.title }}</p>
+  <p>Added by: {{ item.user.username }}</p>
+  <a href="{% url 'wishlist-update' item.id %}">Edit</a>
+  <a href="{% url 'wishlist-delete' item.id %}">Delete</a>
+  <a href="{% url 'wishlist-list' %}">Back to list</a>
+</body>
+
+</html>
