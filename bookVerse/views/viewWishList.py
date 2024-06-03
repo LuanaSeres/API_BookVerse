@@ -1,45 +1,52 @@
-import json
-from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 from ..models.modelWishList import Wishlist
-from ..serializers.serializerWishList import WishlistSerializer
+from ..forms import WishlistForm
 from ..repository import WishlistRepository
 
-@method_decorator(csrf_exempt, name='dispatch')
-class WishListView(View):
-    def post(self, request):
-        data = json.loads(request.body)
-        serializer = WishlistSerializer(data=data)
-        if serializer.is_valid():
-            wishlist = WishlistRepository.create_wishlist(serializer.validated_data)
-            return JsonResponse(WishlistSerializer(wishlist).data, status=201)
-        return JsonResponse(serializer.errors, status=400)
 
-@method_decorator(csrf_exempt, name='dispatch')
+class WishlistListView(View):
+    def get(self, request):
+        wishlist = WishlistRepository.get_all_wishlist_items()
+        return render(request, 'wishlist/wishlist_list.html', {'wishlist': wishlist})
+
 class WishlistDetailView(View):
-    def get(self, request, user_id):
-        wishlist = WishlistRepository.get_wishlist_by_user(user_id)
-        if wishlist is None:
-            return JsonResponse({'error': 'Wishlist not found'}, status=404)
-        serializer = WishlistSerializer(wishlist)
-        return JsonResponse(serializer.data)
+    def get(self, request, pk):
+        wishlist_item = WishlistRepository.get_wishlist_item_by_id(pk)
+        return render(request, 'wishlist/wishlist_detail.html', {'wishlist_item': wishlist_item})
 
-    def put(self, request, user_id):
-        wishlist = WishlistRepository.get_wishlist_by_user(user_id)
-        if wishlist is None:
-            return JsonResponse({'error': 'Wishlist not found'}, status=404)
-        data = json.loads(request.body)
-        serializer = WishlistSerializer(wishlist, data=data)
-        if serializer.is_valid():
-            wishlist = WishlistRepository.update_wishlist(wishlist, serializer.validated_data)
-            return JsonResponse(WishlistSerializer(wishlist).data)
-        return JsonResponse(serializer.errors, status=400)
+class WishlistCreateView(View):
+    def get(self, request):
+        form = WishlistForm()
+        return render(request, 'wishlist/wishlist_form.html', {'form': form})
 
-    def delete(self, request, user_id):
-        wishlist = WishlistRepository.get_wishlist_by_user(user_id)
-        if wishlist is None:
-            return JsonResponse({'error': 'Wishlist not found'}, status=404)
-        WishlistRepository.delete_wishlist(wishlist)
-        return JsonResponse({'message': 'Wishlist deleted successfully'}, status=204)
+    def post(self, request):
+        form = WishlistForm(request.POST)
+        if form.is_valid():
+            wishlist_item = WishlistRepository.create_wishlist_item(form.cleaned_data)
+            return redirect('wishlist-detail', pk=wishlist_item.id)
+        return render(request, 'wishlist/wishlist_form.html', {'form': form})
+
+class WishlistUpdateView(View):
+    def get(self, request, pk):
+        wishlist_item = WishlistRepository.get_wishlist_item_by_id(pk)
+        form = WishlistForm(instance=wishlist_item)
+        return render(request, 'wishlist/wishlist_form.html', {'form': form, 'wishlist_item': wishlist_item})
+
+    def post(self, request, pk):
+        wishlist_item = WishlistRepository.get_wishlist_item_by_id(pk)
+        form = WishlistForm(request.POST, instance=wishlist_item)
+        if form.is_valid():
+            WishlistRepository.update_wishlist_item(wishlist_item, form.cleaned_data)
+            return redirect('wishlist-detail', pk=wishlist_item.id)
+        return render(request, 'wishlist/wishlist_form.html', {'form': form, 'wishlist_item': wishlist_item})
+
+class WishlistDeleteView(View):
+    def get(self, request, pk):
+        wishlist_item = WishlistRepository.get_wishlist_item_by_id(pk)
+        return render(request, 'wishlist/wishlist_confirm_delete.html', {'wishlist_item': wishlist_item})
+
+    def post(self, request, pk):
+        wishlist_item = WishlistRepository.get_wishlist_item_by_id(pk)
+        WishlistRepository.delete_wishlist_item(wishlist_item)
+        return redirect('wishlist-list')
