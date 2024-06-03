@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import BookForm
+from ..forms import BookForm
 from django.views import View
 from ..repository import BookRepository
 
