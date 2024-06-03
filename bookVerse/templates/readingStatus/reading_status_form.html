@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>{% if reading_status %}Edit{% else %}Add{% endif %} Reading Status</title>
+</head>
+
+<body>
+  <h1>{% if reading_status %}Edit{% else %}Add{% endif %} Reading Status</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{% if reading_status %}Update{% else %}Create{% endif %}</button>
+  </form>
+  <a href="{% url 'reading-status-list' %}">Back to list</a>
+</body>
+
+</html>
