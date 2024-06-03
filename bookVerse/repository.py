@@ -1,6 +1,7 @@
 from .models.modelBook import Book
 from .models.modelReview import Review
 from .models.modelWishList import Wishlist
+from .models.modelReadingStatus import ReadingStatus
 
 class BookRepository:
     def get_all_books():
@@ -68,3 +69,23 @@ class WishlistRepository:
 
     def delete_wishlist(wishlist):
         wishlist.delete()
+
+class ReadingStatusRepository:
+    def get_reading_status_by_user_and_book(user_id, book_id):
+        try:
+            return ReadingStatus.objects.get(user_id=user_id, book_id=book_id)
+        except ReadingStatus.DoesNotExist:
+            return None
+
+    def create_reading_status(data):
+        reading_status = ReadingStatus.objects.create(**data)
+        return reading_status
+
+    def update_reading_status(reading_status, data):
+        for field, value in data.items():
+            setattr(reading_status, field, value)
+        reading_status.save()
+        return 
+
+    def delete_reading_status(reading_status):
+        reading_status.delete()
