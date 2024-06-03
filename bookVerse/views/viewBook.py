@@ -1,50 +1,50 @@
-import json
-from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from .forms import BookForm
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from ..models.modelBook import Book
-from ..serializers.serializerBook import BookSerializer
 from ..repository import BookRepository
 
-@method_decorator(csrf_exempt, name='dispatch')
 class BookListView(View):
     def get(self, request):
         books = BookRepository.get_all_books()
-        serializer = BookSerializer(books, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return render(request, 'books/book_list.html', {'books': books})
 
-    def post(self, request):
-        data = json.loads(request.body)
-        serializer = BookSerializer(data=data)
-        if serializer.is_valid():
-            book = BookRepository.create_book(serializer.validated_data)
-            return JsonResponse(BookSerializer(book).data, status=201)
-        return JsonResponse(serializer.errors, status=400)
-
-@method_decorator(csrf_exempt, name='dispatch')
 class BookDetailView(View):
     def get(self, request, pk):
         book = BookRepository.get_book_by_id(pk)
-        if book is None:
-            return JsonResponse({'error': 'Book not found'}, status=404)
-        serializer = BookSerializer(book)
-        return JsonResponse(serializer.data)
+        return render(request, 'books/book_detail.html', {'book': book})
 
-    def put(self, request, pk):
-        book = BookRepository.get_book_by_id(pk)
-        if book is None:
-            return JsonResponse({'error': 'Book not found'}, status=404)
-        data = json.loads(request.body)
-        serializer = BookSerializer(book, data=data)
-        if serializer.is_valid():
-            book = BookRepository.update_book(book, serializer.validated_data)
-            return JsonResponse(BookSerializer(book).data)
-        return JsonResponse(serializer.errors, status=400)
+class BookCreateView(View):
+    def get(self, request):
+        form = BookForm()
+        return render(request, 'books/book_form.html', {'form': form})
 
-    def delete(self, request, pk):
+    def post(self, request):
+        form = BookForm(request.POST)
+        if form.is_valid():
+            book = BookRepository.create_book(form.cleaned_data)
+            return redirect('book-detail', pk=book.id)
+        return render(request, 'books/book_form.html', {'form': form})
+
+class BookUpdateView(View):
+    def get(self, request, pk):
         book = BookRepository.get_book_by_id(pk)
-        if book is None:
-            return JsonResponse({'error': 'Book not found'}, status=404)
+        form = BookForm(instance=book)
+        return render(request, 'books/book_form.html', {'form': form, 'book': book})
+
+    def post(self, request, pk):
+        book = BookRepository.get_book_by_id(pk)
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            BookRepository.update_book(book, form.cleaned_data)
+            return redirect('book-detail', pk=book.id)
+        return render(request, 'books/book_form.html', {'form': form, 'book': book})
+
+class BookDeleteView(View):
+    def get(self, request, pk):
+        book = BookRepository.get_book_by_id(pk)
+        return render(request, 'books/book_confirm_delete.html', {'book': book})
+
+    def post(self, request, pk):
+        book = BookRepository.get_book_by_id(pk)
         BookRepository.delete_book(book)
-        return JsonResponse({'message': 'Book deleted successfully'}, status=204)
+        return redirect('book-list')
