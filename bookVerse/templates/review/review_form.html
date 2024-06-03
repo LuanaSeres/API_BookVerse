@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if review %}Edit{% else %}Add{% endif %} Review</title>
+</head>
+<body>
+    <h1>{% if review %}Edit{% else %}Add{% endif %} Review</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{% if review %}Update{% else %}Create{% endif %}</button>
+    </form>
+    <a href="{% url 'review-list' %}">Back to list</a>
+</body>
+</html>
