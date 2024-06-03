@@ -1,5 +1,6 @@
 from .models.modelBook import Book
 from .models.modelReview import Review
+from .models.modelWishList import Wishlist
 
 class BookRepository:
     def get_all_books():
@@ -47,3 +48,23 @@ class ReviewRepository:
 
     def delete_review(review):
         review.delete()
+
+class WishlistRepository:
+    def get_wishlist_by_user(user_id):
+        try:
+            return Wishlist.objects.get(user_id=user_id)
+        except Wishlist.DoesNotExist:
+            return None
+
+    def create_wishlist(data):
+        wishlist = Wishlist.objects.create(**data)
+        return wishlist
+
+    def update_wishlist(wishlist, data):
+        for field, value in data.items():
+            setattr(wishlist, field, value)
+        wishlist.save()
+        return wishlist
+
+    def delete_wishlist(wishlist):
+        wishlist.delete()
