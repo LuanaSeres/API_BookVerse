@@ -1,50 +1,50 @@
-import json
-from django.http import JsonResponse
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from ..models.modelReview import Review
-from ..serializers.serializerReview import ReviewSerializer
+from django.shortcuts import render, redirect
+from ..forms import ReviewForm
 from ..repository import ReviewRepository
 
-@method_decorator(csrf_exempt, name='dispatch')
 class ReviewListView(View):
     def get(self, request):
         reviews = ReviewRepository.get_all_reviews()
-        serializer = ReviewSerializer(reviews, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return render(request, 'reviews/review_list.html', {'reviews': reviews})
 
-    def post(self, request):
-        data = json.loads(request.body)
-        serializer = ReviewSerializer(data=data)
-        if serializer.is_valid():
-            review = ReviewRepository.create_review(serializer.validated_data)
-            return JsonResponse(ReviewSerializer(review).data, status=201)
-        return JsonResponse(serializer.errors, status=400)
-
-@method_decorator(csrf_exempt, name='dispatch')
 class ReviewDetailView(View):
     def get(self, request, pk):
         review = ReviewRepository.get_review_by_id(pk)
-        if review is None:
-            return JsonResponse({'error': 'Review not found'}, status=404)
-        serializer = ReviewSerializer(review)
-        return JsonResponse(serializer.data)
+        return render(request, 'reviews/review_detail.html', {'review': review})
 
-    def put(self, request, pk):
-        review = ReviewRepository.get_review_by_id(pk)
-        if review is None:
-            return JsonResponse({'error': 'Review not found'}, status=404)
-        data = json.loads(request.body)
-        serializer = ReviewSerializer(review, data=data)
-        if serializer.is_valid():
-            review = ReviewRepository.update_review(review, serializer.validated_data)
-            return JsonResponse(ReviewSerializer(review).data)
-        return JsonResponse(serializer.errors, status=400)
+class ReviewCreateView(View):
+    def get(self, request):
+        form = ReviewForm()
+        return render(request, 'reviews/review_form.html', {'form': form})
 
-    def delete(self, request, pk):
+    def post(self, request):
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = ReviewRepository.create_review(form.cleaned_data)
+            return redirect('review-detail', pk=review.id)
+        return render(request, 'reviews/review_form.html', {'form': form})
+
+class ReviewUpdateView(View):
+    def get(self, request, pk):
         review = ReviewRepository.get_review_by_id(pk)
-        if review is None:
-            return JsonResponse({'error': 'Review not found'}, status=404)
+        form = ReviewForm(instance=review)
+        return render(request, 'reviews/review_form.html', {'form': form, 'review': review})
+
+    def post(self, request, pk):
+        review = ReviewRepository.get_review_by_id(pk)
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            ReviewRepository.update_review(review, form.cleaned_data)
+            return redirect('review-detail', pk=review.id)
+        return render(request, 'reviews/review_form.html', {'form': form, 'review': review})
+
+class ReviewDeleteView(View):
+    def get(self, request, pk):
+        review = ReviewRepository.get_review_by_id(pk)
+        return render(request, 'reviews/review_confirm_delete.html', {'review': review})
+
+    def post(self, request, pk):
+        review = ReviewRepository.get_review_by_id(pk)
         ReviewRepository.delete_review(review)
-        return JsonResponse({'message': 'Review deleted successfully'}, status=204)
+        return redirect('review-list')
