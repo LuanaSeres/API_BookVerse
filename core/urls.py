@@ -1,22 +1,18 @@
-"""
-URL configuration for core project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
+from bookVerse.views.viewBook import BookListView, BookDetailView
+from bookVerse.views.viewReview import ReviewListView, ReviewDetailView
+from bookVerse.views.viewWishList import WishListView, WishlistDetailView
+from bookVerse.views.viewReadingStatus import ReadingStatusView, ReadingStatusDetailView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/books/', BookListView.as_view(), name='book-list-create'),
+    path('api/books/<int:pk>/', BookDetailView.as_view(), name='book-detail'),
+    path('api/comments/', ReviewListView.as_view(), name='review-list-create'),
+    path('api/comments/<int:pk>/', ReviewDetailView.as_view(), name='review-detail'),
+    path('api/wishlist/', WishListView.as_view(), name='wishlist'),
+    path('api/wishlist/<int:pk>/', WishlistDetailView.as_view(), name='wishlist-detail'),
+    path('api/reading-status/', ReadingStatusView.as_view(), name='reading-status'),
+    path('api/reading-status/<int:pk>/', ReadingStatusDetailView.as_view(), name='reading-status-detail'),
 ]

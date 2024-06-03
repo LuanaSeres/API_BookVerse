@@ -3,12 +3,12 @@ from django.http import JsonResponse
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from ..models.modeWishList import Wishlist
+from ..models.modelWishList import Wishlist
 from ..serializers.serializerWishList import WishlistSerializer
 from ..repository import WishlistRepository
 
 @method_decorator(csrf_exempt, name='dispatch')
-class WishlistListView(View):
+class WishListView(View):
     def post(self, request):
         data = json.loads(request.body)
         serializer = WishlistSerializer(data=data)
