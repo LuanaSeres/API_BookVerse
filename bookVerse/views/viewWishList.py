@@ -5,7 +5,7 @@ from ..forms import WishlistForm
 from ..repository import WishlistRepository
 
 
-class WishlistListView(View):
+class WishListView(View):
     def get(self, request):
         wishlist = WishlistRepository.get_all_wishlist_items()
         return render(request, 'wishlist/wishlist_list.html', {'wishlist': wishlist})

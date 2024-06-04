@@ -1,49 +1,51 @@
-import json
-from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 from ..models.modelReadingStatus import ReadingStatus
-from ..serializers.serializerReadingStatus import ReadingStatusSerializer
+from ..forms import ReadingStatusForm
 from ..repository import ReadingStatusRepository
 
-@method_decorator(csrf_exempt, name='dispatch')
-class ReadingStatusView(View):
+class ReadingStatusListView(View):
     def get(self, request):
-        reading_statuses = ReadingStatusRepository.get_all_reading_status()
-        serializer = ReadingStatusSerializer(reading_statuses, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
-    def post(self, request):
-        data = json.loads(request.body)
-        serializer = ReadingStatusSerializer(data=data)
-        if serializer.is_valid():
-            reading_status = ReadingStatusRepository.create_reading_status(serializer.validated_data)
-            return JsonResponse(ReadingStatusSerializer(reading_status).data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+        reading_statuses = ReadingStatusRepository.get_all_reading_statuses()
+        return render(request, 'reading_status/reading_status_list.html', {'reading_statuses': reading_statuses})
 
 class ReadingStatusDetailView(View):
     def get(self, request, pk):
         reading_status = ReadingStatusRepository.get_reading_status_by_id(pk)
-        if reading_status is None:
-            return JsonResponse({'error': 'Reading status not found'}, status=404)
-        serializer = ReadingStatusSerializer(reading_status)
-        return JsonResponse(serializer.data)
+        return render(request, 'reading_status/reading_status_detail.html', {'reading_status': reading_status})
 
-    def put(self, request, pk):
-        reading_status = ReadingStatusRepository.get_reading_status_by_id(pk)
-        if reading_status is None:
-            return JsonResponse({'error': 'Reading status not found'}, status=404)
-        data = json.loads(request.body)
-        serializer = ReadingStatusSerializer(reading_status, data=data)
-        if serializer.is_valid():
-            reading_status = ReadingStatusRepository.update_reading_status(reading_status, serializer.validated_data)
-            return JsonResponse(ReadingStatusSerializer(reading_status).data)
-        return JsonResponse(serializer.errors, status=400)
+class ReadingStatusCreateView(View):
+    def get(self, request):
+        form = ReadingStatusForm()
+        return render(request, 'reading_status/reading_status_form.html', {'form': form})
 
-    def delete(self, request, pk):
+    def post(self, request):
+        form = ReadingStatusForm(request.POST)
+        if form.is_valid():
+            reading_status = ReadingStatusRepository.create_reading_status(form.cleaned_data)
+            return redirect('reading-status-detail', pk=reading_status.id)
+        return render(request, 'reading_status/reading_status_form.html', {'form': form})
+
+class ReadingStatusUpdateView(View):
+    def get(self, request, pk):
         reading_status = ReadingStatusRepository.get_reading_status_by_id(pk)
-        if reading_status is None:
-            return JsonResponse({'error': 'Reading status not found'}, status=404)
+        form = ReadingStatusForm(instance=reading_status)
+        return render(request, 'reading_status/reading_status_form.html', {'form': form, 'reading_status': reading_status})
+
+    def post(self, request, pk):
+        reading_status = ReadingStatusRepository.get_reading_status_by_id(pk)
+        form = ReadingStatusForm(request.POST, instance=reading_status)
+        if form.is_valid():
+            ReadingStatusRepository.update_reading_status(reading_status, form.cleaned_data)
+            return redirect('reading-status-detail', pk=reading_status.id)
+        return render(request, 'reading_status/reading_status_form.html', {'form': form, 'reading_status': reading_status})
+
+class ReadingStatusDeleteView(View):
+    def get(self, request, pk):
+        reading_status = ReadingStatusRepository.get_reading_status_by_id(pk)
+        return render(request, 'reading_status/reading_status_confirm_delete.html', {'reading_status': reading_status})
+
+    def post(self, request, pk):
+        reading_status = ReadingStatusRepository.get_reading_status_by_id(pk)
         ReadingStatusRepository.delete_reading_status(reading_status)
-        return JsonResponse({'message': 'Reading status deleted successfully'}, status=204)
+        return redirect('reading-status-list')
