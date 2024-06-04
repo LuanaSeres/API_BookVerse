@@ -5,6 +5,7 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
     genre = models.CharField(max_length=100)
+    description = models.TextField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='books')
 
     def _str_(self):
