@@ -15,10 +15,11 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ['rating', 'comment'] 
 
+
 class WishlistForm(forms.ModelForm):
     class Meta:
         model = Wishlist
-        fields = ['book', 'priority']
+        fields = ['title', 'author', 'genre', 'description', 'priority']
 
 class ReadingStatusForm(forms.ModelForm):
     class Meta:
