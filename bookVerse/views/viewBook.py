@@ -1,18 +1,17 @@
 from django.shortcuts import render, redirect
 from ..forms import BookForm
+from ..models.modelBook import Book
 from django.views import View
 from ..repository import BookRepository
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 class BookListView(View):
     def get(self, request):
         books = BookRepository.get_all_books()
         return render(request, 'book_list.html', {'books': books})
-
-class BookDetailView(View):
-    def get(self, request, pk):
-        book = BookRepository.get_book_by_id(pk)
-        return render(request, 'book_detail.html', {'book': book})
-
+    
+@method_decorator(login_required, name='dispatch')
 class BookCreateView(View):
     def get(self, request):
         form = BookForm()
@@ -22,32 +21,39 @@ class BookCreateView(View):
         form = BookForm(request.POST)
         if form.is_valid():
             book = form.save(commit=False)
-            book.owner = request.user  # Associando o livro ao usuário atualmente logado
+            book.owner = request.user
             book.save()
-            return redirect('book_list')  # Redirecionar para a página de listagem de livros
+            return redirect('book-detail', pk=book.pk)
         return render(request, 'book_form.html', {'form': form})
 
+@method_decorator(login_required, name='dispatch')
+class BookDetailView(View):
+    def get(self, request, pk):
+        book = Book.objects.get(pk=pk)
+        return render(request, 'book_detail.html', {'book': book})
 
+@method_decorator(login_required, name='dispatch')
 class BookUpdateView(View):
     def get(self, request, pk):
-        book = BookRepository.get_book_by_id(pk)
+        book = Book.objects.get(pk=pk)
         form = BookForm(instance=book)
-        return render(request, 'book_form.html', {'form': form, 'book': book})
+        return render(request, 'book_form.html', {'form': form})
 
     def post(self, request, pk):
-        book = BookRepository.get_book_by_id(pk)
+        book = Book.objects.get(pk=pk)
         form = BookForm(request.POST, instance=book)
         if form.is_valid():
-            BookRepository.update_book(book, form.cleaned_data)
-            return redirect('book-detail', pk=book.id)
-        return render(request, 'book_form.html', {'form': form, 'book': book})
+            form.save()
+            return redirect('book-detail', pk=pk)
+        return render(request, 'book_form.html', {'form': form})
 
+@method_decorator(login_required, name='dispatch')
 class BookDeleteView(View):
     def get(self, request, pk):
-        book = BookRepository.get_book_by_id(pk)
+        book = Book.objects.get(pk=pk)
         return render(request, 'book_confirm_delete.html', {'book': book})
 
     def post(self, request, pk):
-        book = BookRepository.get_book_by_id(pk)
-        BookRepository.delete_book(book)
+        book = Book.objects.get(pk=pk)
+        book.delete()
         return redirect('book-list')
