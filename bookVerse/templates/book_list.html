@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Book List</title>
 </head>
+
 <body>
     <h1>Books</h1>
     <ul>
@@ -13,9 +15,11 @@
         {% endfor %}
     </ul>
     <a href="{% url 'book-create' %}">Add New Book</a>
+    <a href="{% url 'wishlist-list' %}">Wishlist</a>
     <form action="{% url 'logout' %}" method="post" id="logout-form">
         {% csrf_token %}
         <button type="submit">Logout</button>
     </form>
 </body>
+
 </html>
