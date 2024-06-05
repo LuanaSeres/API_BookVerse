@@ -22,10 +22,8 @@ urlpatterns = [
     path('books/<int:pk>/delete/', BookDeleteView.as_view(), name='book-delete'),
 
     # Review
-    path('reviews/', ReviewListView.as_view(), name='review-list'),
-    path('reviews/create/', ReviewCreateView.as_view(), name='review-create'),
-    path('reviews/<int:pk>/', ReviewDetailView.as_view(), name='review-detail'),
-    path('reviews/<int:pk>/update/', ReviewUpdateView.as_view(), name='review-update'),
+    path('books/<int:book_pk>/review/add/', ReviewCreateView.as_view(), name='review-add'),
+    path('reviews/<int:pk>/edit/', ReviewUpdateView.as_view(), name='review-edit'),
     path('reviews/<int:pk>/delete/', ReviewDeleteView.as_view(), name='review-delete'),
 
     # WishList
