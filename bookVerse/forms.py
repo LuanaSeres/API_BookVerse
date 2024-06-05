@@ -1,5 +1,8 @@
 from django import forms
-from .models import Book, Review, Wishlist, ReadingStatus
+from .models.modelBook import Book
+from .models.modelReview import Review
+from .models.modelWishList import Wishlist
+from .models.modelReadingStatus import ReadingStatus
 
 class BookForm(forms.ModelForm):
     class Meta:
