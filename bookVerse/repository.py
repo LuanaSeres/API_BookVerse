@@ -53,24 +53,37 @@ class ReviewRepository:
 
 
 class WishlistRepository:
+    @staticmethod
+    def get_all_wishlist():
+        return Wishlist.objects.all()
+
+    @staticmethod
     def get_wishlist_by_user(user_id):
-        try:
-            return Wishlist.objects.get(user_id=user_id)
-        except Wishlist.DoesNotExist:
-            return None
+        return Wishlist.objects.filter(user_id=user_id)
 
-    def create_wishlist(data):
-        wishlist = Wishlist.objects.create(**data)
-        return wishlist
+    @staticmethod
+    def create_wishlist_item(data):
+        user = data.pop('user')
+        wishlist_item = Wishlist.objects.create(user=user, **data)
+        return wishlist_item
 
-    def update_wishlist(wishlist, data):
-        for field, value in data.items():
-            setattr(wishlist, field, value)
-        wishlist.save()
-        return wishlist
+    @staticmethod
+    def get_wishlist_item_by_id(item_id):
+        return Wishlist.objects.get(id=item_id)
 
-    def delete_wishlist(wishlist):
-        wishlist.delete()
+    @staticmethod
+    def update_wishlist_item(item_id, data):
+        wishlist_item = Wishlist.objects.get(id=item_id)
+        for attr, value in data.items():
+            setattr(wishlist_item, attr, value)
+        wishlist_item.save()
+        return wishlist_item
+
+
+    @staticmethod
+    def delete_wishlist_item(item_id):
+        wishlist_item = Wishlist.objects.get(id=item_id)
+        wishlist_item.delete()
 
 
 class ReadingStatusRepository:
