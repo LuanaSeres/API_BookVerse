@@ -2,6 +2,7 @@ from .models.modelBook import Book
 from .models.modelReview import Review
 from .models.modelWishList import Wishlist
 from .models.modelReadingStatus import ReadingStatus
+from django.contrib.auth.models import User
 
 class BookRepository:
     def get_all_books():
@@ -50,6 +51,7 @@ class ReviewRepository:
     def delete_review(review):
         review.delete()
 
+
 class WishlistRepository:
     def get_wishlist_by_user(user_id):
         try:
@@ -70,6 +72,7 @@ class WishlistRepository:
     def delete_wishlist(wishlist):
         wishlist.delete()
 
+
 class ReadingStatusRepository:
     def get_reading_status_by_user_and_book(user_id, book_id):
         try:
@@ -89,3 +92,27 @@ class ReadingStatusRepository:
 
     def delete_reading_status(reading_status):
         reading_status.delete()
+
+
+class UserRepository:
+    def get_all(self):
+        return User.objects.all()
+
+    def get_by_id(self, id):
+        return User.objects.get(id=id)
+
+    def create(self, user_data):
+        user = User.objects.create_user(**user_data)
+        return user
+
+    def update(self, user_data, id):
+        user = User.objects.get(id=id)
+        user.username = user_data.get('username', user.username)
+        user.email = user_data.get('email', user.email)
+        if user_data.get('password'):
+            user.set_password(user_data['password'])
+        user.save()
+        return user
+
+    def delete(self, id):
+        User.objects.get(id=id).delete()
