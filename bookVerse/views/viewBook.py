@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from ..forms import BookForm
+from django.shortcuts import render, get_object_or_404, redirect
+from ..forms import BookForm, ReviewForm
 from ..models.modelBook import Book
 from django.views import View
 from ..repository import BookRepository
@@ -26,11 +26,11 @@ class BookCreateView(View):
             return redirect('book-detail', pk=book.pk)
         return render(request, 'book_form.html', {'form': form})
 
-@method_decorator(login_required, name='dispatch')
 class BookDetailView(View):
     def get(self, request, pk):
-        book = Book.objects.get(pk=pk)
-        return render(request, 'book_detail.html', {'book': book})
+        book = get_object_or_404(Book, pk=pk)
+        reviews = book.reviews.all()
+        return render(request, 'book_detail.html', {'book': book, 'reviews': reviews})
 
 @method_decorator(login_required, name='dispatch')
 class BookUpdateView(View):
