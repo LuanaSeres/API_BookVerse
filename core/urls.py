@@ -29,7 +29,7 @@ urlpatterns = [
     path('reviews/<int:pk>/delete/', ReviewDeleteView.as_view(), name='review-delete'),
 
     # WishList
-    path('wishlist/', WishListView.as_view(), name='wishlist-list'),
+    path('wishlist/', WishlistListView.as_view(), name='wishlist-list'),
     path('wishlist/create/', WishlistCreateView.as_view(), name='wishlist-create'),
     path('wishlist/<int:pk>/', WishlistDetailView.as_view(), name='wishlist-detail'),
     path('wishlist/<int:pk>/update/', WishlistUpdateView.as_view(), name='wishlist-update'),
