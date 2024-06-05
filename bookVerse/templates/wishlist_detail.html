@@ -2,15 +2,17 @@
 <html>
 
 <head>
-  <title>{{ item.book.title }}</title>
+  <title>{{ wishlist_item.title }}</title>
 </head>
 
 <body>
-  <h1>Wishlist Item: {{ item.book.title }}</h1>
-  <p>Book: {{ item.book.title }}</p>
-  <p>Added by: {{ item.user.username }}</p>
-  <a href="{% url 'wishlist-update' item.id %}">Edit</a>
-  <a href="{% url 'wishlist-delete' item.id %}">Delete</a>
+  <h1>Wishlist Item: {{ wishlist_item.title }}</h1>
+  <p>Author: {{ wishlist_item.author }}</p>
+  <p>Genre: {{ wishlist_item.genre }}</p>
+  <p>Description: {{ wishlist_item.description }}</p>
+  <p>Priority: {{ wishlist_item.priority}}</p>
+  <a href="{% url 'wishlist-update' wishlist_item.id %}">Edit</a>
+  <a href="{% url 'wishlist-delete' wishlist_item.id %}">Delete</a>
   <a href="{% url 'wishlist-list' %}">Back to list</a>
 </body>
 
