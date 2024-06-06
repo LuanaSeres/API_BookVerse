@@ -1,11 +1,13 @@
-from django.contrib.auth.models import User
 from django.db import models
-from ..models.modelBook import Book
+from django.contrib.auth.models import User
 
 class Wishlist(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='wishlist')
-    book = models.ManyToManyField(Book, related_name='wishlisted_by')
-    priority = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255, default='Default Title')
+    author = models.CharField(max_length=255, default='Default Author')
+    genre = models.CharField(max_length=100, default='Default Genre')
+    description = models.TextField(default='No description')
+    priority = models.IntegerField(default=0, null=True, blank=True)
 
-    def __str__(self):
-        return self.user.username
+    def _str_(self):
+        return self.title

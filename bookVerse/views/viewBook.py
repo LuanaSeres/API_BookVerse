@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from ..forms import BookForm
 from ..models.modelBook import Book
+from ..models.modelReadingStatus import ReadingStatus
 from django.views import View
 from ..repository import BookRepository
 from django.contrib.auth.decorators import login_required
@@ -26,11 +27,14 @@ class BookCreateView(View):
             return redirect('book-detail', pk=book.pk)
         return render(request, 'book_form.html', {'form': form})
 
-@method_decorator(login_required, name='dispatch')
 class BookDetailView(View):
     def get(self, request, pk):
-        book = Book.objects.get(pk=pk)
-        return render(request, 'book_detail.html', {'book': book})
+        book = get_object_or_404(Book, pk=pk)
+        reviews = book.reviews.all()
+        reading_status = None
+        if request.user.is_authenticated:
+            reading_status = ReadingStatus.objects.filter(user=request.user, book=book).first()
+        return render(request, 'book_detail.html', {'book': book, 'reviews': reviews, 'reading_status': reading_status})
 
 @method_decorator(login_required, name='dispatch')
 class BookUpdateView(View):

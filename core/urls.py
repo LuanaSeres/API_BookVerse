@@ -22,14 +22,12 @@ urlpatterns = [
     path('books/<int:pk>/delete/', BookDeleteView.as_view(), name='book-delete'),
 
     # Review
-    path('reviews/', ReviewListView.as_view(), name='review-list'),
-    path('reviews/create/', ReviewCreateView.as_view(), name='review-create'),
-    path('reviews/<int:pk>/', ReviewDetailView.as_view(), name='review-detail'),
-    path('reviews/<int:pk>/update/', ReviewUpdateView.as_view(), name='review-update'),
+    path('books/<int:book_pk>/review/add/', ReviewCreateView.as_view(), name='review-add'),
+    path('reviews/<int:pk>/edit/', ReviewUpdateView.as_view(), name='review-edit'),
     path('reviews/<int:pk>/delete/', ReviewDeleteView.as_view(), name='review-delete'),
 
     # WishList
-    path('wishlist/', WishListView.as_view(), name='wishlist-list'),
+    path('wishlist/', WishlistListView.as_view(), name='wishlist-list'),
     path('wishlist/create/', WishlistCreateView.as_view(), name='wishlist-create'),
     path('wishlist/<int:pk>/', WishlistDetailView.as_view(), name='wishlist-detail'),
     path('wishlist/<int:pk>/update/', WishlistUpdateView.as_view(), name='wishlist-update'),
@@ -39,7 +37,7 @@ urlpatterns = [
     path('reading-status/', ReadingStatusListView.as_view(), name='reading-status-list'),
     path('reading-status/create/', ReadingStatusCreateView.as_view(), name='reading-status-create'),
     path('reading-status/<int:pk>/', ReadingStatusDetailView.as_view(), name='reading-status-detail'),
-    path('reading-status/<int:pk>/update/', ReadingStatusUpdateView.as_view(), name='reading-status-update'),
+    path('reading-status/update/', UpdateReadingStatusView.as_view(), name='reading-status-update'),
     path('reading-status/<int:pk>/delete/', ReadingStatusDeleteView.as_view(), name='reading-status-delete'),
 
     # User

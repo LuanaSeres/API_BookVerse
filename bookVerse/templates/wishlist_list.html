@@ -8,13 +8,14 @@
 <body>
   <h1>Wishlist</h1>
   <ul>
-    {% for item in wishlist %}
+    {% for item in wishlist_items %}
     <li>
-      <a href="{% url 'wishlist-detail' item.id %}">{{ item.book.title }}</a>
+      <a href="{% url 'wishlist-detail' item.id %}">{{ item.title }}</a>
     </li>
     {% endfor %}
   </ul>
-  <a href="{% url 'wishlist-create' %}">Add New Item</a>
+  <a href="{% url 'wishlist-create' %}">Add new book</a>
+  <a href="{% url 'book-list' %}">Return Book List</a>
 </body>
 
 </html>
