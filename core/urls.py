@@ -37,7 +37,7 @@ urlpatterns = [
     path('reading-status/', ReadingStatusListView.as_view(), name='reading-status-list'),
     path('reading-status/create/', ReadingStatusCreateView.as_view(), name='reading-status-create'),
     path('reading-status/<int:pk>/', ReadingStatusDetailView.as_view(), name='reading-status-detail'),
-    path('reading-status/<int:pk>/update/', ReadingStatusUpdateView.as_view(), name='reading-status-update'),
+    path('reading-status/update/', UpdateReadingStatusView.as_view(), name='reading-status-update'),
     path('reading-status/<int:pk>/delete/', ReadingStatusDeleteView.as_view(), name='reading-status-delete'),
 
     # User
