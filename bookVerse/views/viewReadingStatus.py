@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from ..models.modelReadingStatus import ReadingStatus
 from ..forms import ReadingStatusForm
@@ -26,19 +27,18 @@ class ReadingStatusCreateView(View):
             return redirect('reading-status-detail', pk=reading_status.id)
         return render(request, 'reading_status_form.html', {'form': form})
 
-class ReadingStatusUpdateView(View):
-    def get(self, request, pk):
-        reading_status = ReadingStatusRepository.get_reading_status_by_id(pk)
-        form = ReadingStatusForm(instance=reading_status)
-        return render(request, 'reading_status_form.html', {'form': form, 'reading_status': reading_status})
+class UpdateReadingStatusView(LoginRequiredMixin, View):
+    def post(self, request):
+        status = request.POST.get('status')
+        progress = request.POST.get('progress')
+        book_id = request.POST.get('book_id')
 
-    def post(self, request, pk):
-        reading_status = ReadingStatusRepository.get_reading_status_by_id(pk)
-        form = ReadingStatusForm(request.POST, instance=reading_status)
-        if form.is_valid():
-            ReadingStatusRepository.update_reading_status(reading_status, form.cleaned_data)
-            return redirect('reading-status-detail', pk=reading_status.id)
-        return render(request, 'reading_status_form.html', {'form': form, 'reading_status': reading_status})
+        reading_status, _ = ReadingStatus.objects.get_or_create(user=request.user, book_id=book_id)
+        reading_status.status = status
+        reading_status.progress = progress
+        reading_status.save()
+
+        return redirect('book-detail', pk=book_id)
 
 class ReadingStatusDeleteView(View):
     def get(self, request, pk):
