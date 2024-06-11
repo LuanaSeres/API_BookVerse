@@ -1,25 +1,55 @@
+{% load static %}
+
 <!DOCTYPE html>
+<html lang="pt-br">
 <html>
 
 <head>
-    <title>Book List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/book_list.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
 </head>
 
+
 <body>
-    <h1>Books</h1>
-    <ul>
-        {% for book in books %}
-        <li>
-            <a href="{% url 'book-detail' book.id %}">{{ book.title }} by {{ book.author }}</a>
-        </li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'book-create' %}">Add New Book</a>
-    <a href="{% url 'wishlist-list' %}">Wishlist</a>
-    <form action="{% url 'logout' %}" method="post" id="logout-form">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
+    <header>
+        <h1>BookVerse</h1>
+
+        <div class="utilitarios">
+            <a href="{% url 'book-create' %}">Adicionar novo livro</a>
+            <a href="{% url 'wishlist-list' %}">Lista de desejos</a>
+            <form action="{% url 'logout' %}" method="post" id="logout-form">
+                {% csrf_token %}
+                <button class="logout" type="submit">Sair</button>
+            </form>
+        </div>
+    </header>
+
+    <main>
+        <h2 class="text">Sua Biblioteca Virtual</h2>
+
+        <div class="espaco">
+            {% for book in books %}
+            <div class="card">
+                <div class="conteudo">
+                    <h2>{{ book.title }}</h2>
+                    <p>Autor: {{ book.author }}</p>
+                    <p>Gênero: {{ book.genre}}</p>
+                </div>
+                <a href="{% url 'book-detail' book.id %}">Detalhes</a>
+            </div>
+            {% endfor %}
+        </div>
+
+    </main>
+
 </body>
 
 </html>
