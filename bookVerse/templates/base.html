@@ -1,71 +1,47 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}BookVerse{% endblock %}</title>
-    <!-- Adicione seus links de estilo CSS e scripts JavaScript aqui -->
-    <style>
-        /* Estilos para o formulário de login */
-        .login-form {
-            margin: 0 auto;
-            width: 300px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
 
-        .login-form input[type="text"],
-        .login-form input[type="password"],
-        .login-form button {
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
 
-        .login-form button {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-        }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
 
-        .login-form button:hover {
-            background-color: #45a049;
-        }
-    </style>
 </head>
+
 <body>
     <header>
-        <h1>Welcome to BookVerse!</h1>
-        <p>Explore your favorite books and authors.</p>
+        <div class="inicio">
+            <h1>Bem vindo ao BookVerse!</h1>
+            <p>A biblioteca pessoal virtual feita para você.</p>
+        </div>
+        <div class="cadastro">
+            <p>Não tem uma conta? <a href="{% url 'user_generate' %}">Cadastre-se</a></p>
+        </div>
     </header>
-
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-
-    <footer>
-        <!-- Adicione seu rodapé aqui -->
-    </footer>
 
     {% block login_form %}
     <div class="login-form">
-        <h2>Login</h2>
+        <h2>Entrar</h2>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Login</button>
+            <button type="submit">Entrar</button>
         </form>
         {% if form.errors %}
-            <p>Invalid username or password</p>
+        <p>Usuário ou senha invalidos.</p>
         {% endif %}
-        <p>Não tem uma conta? <a href="{% url 'user_generate' %}">Cadastre-se</a></p>
+
     </div>
     {% endblock %}
 </body>
+
 </html>
