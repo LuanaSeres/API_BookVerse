@@ -1,15 +1,38 @@
+{% load static %}
+
 <!DOCTYPE html>
+<html lang="pt-br">
 <html>
+
 <head>
-    <title>Create User</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Usuário</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/user_generate.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
 </head>
 <body>
-    <h1>Create User</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Register</button>
-    </form>
-    <a href="{% url 'user_list' %}">Back to User List</a>
+    <header>
+        <h1>BookVerse</h1>
+    
+        <div class="utilitarios">
+            <a href="{% url 'user_list' %}">Voltar a página inicial</a>
+        </div>
+    </header>
+
+    <main>
+        <h2 class="text">Criar Usuário</h2>
+        <div class="form">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Registrar</button>
+            </form>
+        </div>
+    </main>
 </body>
 </html>
