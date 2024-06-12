@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if wishlist_item %}Editar{% else %}Adicionar{% endif %} novo livro</title>
 
-    <link rel="stylesheet" type="text/css" href="{% static 'css/book_form.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/wishlist_form.css' %}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
     <h1>BookVerse</h1>
 
     <div class="utilitarios">
-        <a href="{% url 'wishlist-create' %}">Adicionar novo livro</a>
+        <a href="{% url 'book-list' %}">Biblioteca</a>
         <a href="{% url 'wishlist-list' %}">Lista de desejos</a>
         <form action="{% url 'logout' %}" method="post" id="logout-form">
             {% csrf_token %}
@@ -37,12 +37,9 @@
       <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <div class="botao">
-          <button type="submit">{% if wishlist_item %}Editar{% else %}Adicionar{% endif %}</button>
-        </div>
+        <button class="adicionar" type="submit">{% if wishlist_item %}Editar{% else %}Adicionar{% endif %}</button>
       </form> 
     </div>
-    <a href="{% url 'wishlist-list' %}">Back to list</a>
   </main>
 </body>
 
