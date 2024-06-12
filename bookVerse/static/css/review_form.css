@@ -73,8 +73,7 @@ main {
   font-weight: bold;
 }
 
-input[type="text"],
-textarea {
+input[type="text"], input[type="number"], textarea {
   width: 80%;
   padding: 10px;
   margin-right: 20px;
