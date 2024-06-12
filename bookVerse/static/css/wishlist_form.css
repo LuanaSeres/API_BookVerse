@@ -73,7 +73,7 @@ main {
   font-weight: bold;
 }
 
-input[type="text"], textarea {
+input[type="text"], input[type="number"], textarea {
   width: 80%;
   padding: 10px;
   margin-right: 20px;
@@ -84,18 +84,7 @@ input[type="text"], textarea {
   box-sizing: border-box;
 }
 
-input[type="number"] {
-  width: 80%;
-  padding: 10px;
-  margin-right: 20px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-button {
+.adicionar {
   width: 150px;
   margin-bottom: 10px;
   padding: 10px;
@@ -108,6 +97,6 @@ button {
   font-weight: bold;
 }
 
-button:hover {
+.adicionar:hover {
   background-color: #687AD4;
 }
