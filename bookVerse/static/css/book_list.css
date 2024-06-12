@@ -55,8 +55,10 @@ header h1 {
 }
 
 .espaco {
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .card {
@@ -74,7 +76,10 @@ header h1 {
 }
 
 .conteudo {
+  width: 100%;
+  margin-left: 10px;
   text-align: left;
+  text-transform: capitalize;
 }
 
 .conteudo h2 {
