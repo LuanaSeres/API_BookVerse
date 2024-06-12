@@ -1,21 +1,51 @@
+{% load static %}
+
 <!DOCTYPE html>
+<html lang="pt-br">
 <html>
 
 <head>
-  <title>Wishlist</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Desejos</title>
+
+  <link rel="stylesheet" type="text/css" href="{% static 'css/wishlist_list.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
-  <h1>Wishlist</h1>
-  <ul>
-    {% for item in wishlist_items %}
-    <li>
-      <a href="{% url 'wishlist-detail' item.id %}">{{ item.title }}</a>
-    </li>
-    {% endfor %}
-  </ul>
-  <a href="{% url 'wishlist-create' %}">Add new book</a>
-  <a href="{% url 'book-list' %}">Return Book List</a>
+  <header>
+    <h1>BookVerse</h1>
+
+    <div class="utilitarios">
+        <a href="{% url 'wishlist-create' %}">Adicionar novo livro</a>
+        <a href="{% url 'book-list' %}">Biblioteca</a>
+        <form action="{% url 'logout' %}" method="post" id="logout-form">
+            {% csrf_token %}
+            <button class="logout" type="submit">Sair</button>
+        </form>
+    </div>
+  </header>
+
+  <main>
+    <h2>Lista de Desejos</h2>
+
+    <div class="espaco">
+      {% for item in wishlist_items %}
+      <div class="card">
+        <div class="conteudo">
+          <h2>{{ item.title }}</h2>
+          <p>Autor: {{ item.author }}</p>
+          <p>Prioridade: {{ item.priority }}</p>
+        </div>
+        <a href="{% url 'wishlist-detail' item.id %}">Detalhes</a>
+      </div>
+      {% endfor %}
+    </div>
 </body>
 
 </html>
