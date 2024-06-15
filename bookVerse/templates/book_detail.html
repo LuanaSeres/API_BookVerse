@@ -31,65 +31,86 @@
     </header>
 
     <main>
-        <h1>{{ book.title }}</h1>
-        <p>Autor: {{ book.author }}</p>
-        <p>Genero: {{ book.genre }}</p>
-        <p>Descrição: {{ book.description }}</p>
-    
-        {% if reading_status %}
-        <p>Status da Leitura: {{ reading_status.status }}</p>
-        <p>Progresso: {{ reading_status.progress }}%</p>
-        {% else %}
-        <p>Status da Leitura: Sem informação</p>
-        {% endif %}
-    
-        <br>
-    
-        <a class=".editar" href="{% url 'book-update' book.pk %}">Editar</a>
-        <form method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" onclick="return confirm('Deseja deletar esse livro?')">Deletar</button>
-        </form>
-    
-        <br><br>
+        <div class="detalhes">
+            <h1>{{ book.title }}</h1>
+            <p>Autor: {{ book.author }}</p>
+            <p>Gênero: {{ book.genre }}</p>
+            <p>Descrição: {{ book.description }}</p>
+        
+            {% if reading_status %}
+            <p>Status da Leitura: {{ reading_status.status }}</p>
+            <p>Progresso: {{ reading_status.progress }}%</p>
+            {% else %}
+            <p>Status da Leitura: Sem informação</p>
+            {% endif %}
+        
+            <br>
 
+            <button class="editar" data-url="{% url 'book-update' book.pk %}">Editar</button>  
+            
+            <form action="{% url 'book-delete' book.pk %}" method="post" style="display: inline;" class="delete-form" data-return-url="{% url 'book-list' %}">
+                {% csrf_token %}
+                <button type="button" class="delete-btn">Deletar</button>
+            </form>
+        
+            <br><br>
 
-        <form action="{% url 'reading-status-update' %}" method="post">
-            {% csrf_token %}
-            <select name="status">
-                <option value="read">Lido</option>
-                <option value="unread">Não Lido</option>
-                <option value="reading">Lendo</option>
-            </select>
-            <input type="number" name="progress" min="0" max="100" placeholder="Progress (%)">
-            <input type="hidden" name="book_id" value="{{ book.id }}">
-            <button type="submit">Salvar</button>
-        </form>
+            <form action="{% url 'reading-status-update' %}" method="post">
+                {% csrf_token %}
+                <select name="status">
+                    <option value="Lido">Lido</option>
+                    <option value="Não Lido">Não Lido</option>
+                    <option value="Lendo">Lendo</option>
+                </select>
+                <input type="number" name="progress" min="0" max="100" placeholder="Progresso (%)">
+                <input type="hidden" name="book_id" value="{{ book.id }}">
+                <br>
+                <button type="submit">Salvar</button>
+            </form>
 
-        {% if error_message %}
-        <div class="errors">
-            <p>{{ error_message }}</p>
+            {% if error_message %}
+            <div class="errors">
+                <p>{{ error_message }}</p>
+            </div>
+            {% endif %}
+
         </div>
-        {% endif %}
 
-        <h2>Reviews</h2>
-        <a href="{% url 'review-add' book.pk %}">Adicionar Review</a>
+        <div>
+            <h2>Reviews</h2>
 
-        {% for review in reviews %}
-        <div class="review">       
-            <div class="card">
-                <div class="conteudo">
-                    <h3>Nota: {{ review.rating }}</h3>
-                    <p>{{ review.comment }}</p>
+            <button class="editar" data-url="{% url 'review-add' book.pk %}">Adicionar Review</button>
+
+            <div class="espaco">
+                {% for review in reviews %}
+                <div class="review">       
+                    <div class="card">
+                        <div class="conteudo">
+                            <h3>Nota: {{ review.rating }}</h3>
+                            <p>{{ review.comment }}</p>
+                        </div>
+                        <button class="editar" data-url="{% url 'review-edit' review.pk %}">Editar</button>
+                        <form action="{% url 'review-delete' review.pk %}" method="post" style="display:inline;" class="delete-form" data-return-url="">
+                            {% csrf_token %}
+                            <button type="button" class="delete-btn">Deletar</button>
+                        </form>
+                    </div>
                 </div>
-                <a href="{% url 'review-edit' review.pk %}">Editar</a>
-                <form action="{% url 'review-delete' review.pk %}" method="post" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" onclick="return confirm('Deseja deletar essa review?')">Deletar</button>
-                </form>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
     </main>
-    </body>
+
+    <!-- Popup de confirmação -->
+    <div id="confirmation-popup" class="popup">
+        <div class="popup-content">
+            <p>Tem certeza que deseja deletar?</p>
+            <button id="confirm-delete-btn">Sim</button>
+            <button id="cancel-delete-btn">Não</button>
+        </div>
+    </div>
+
+    <script src="{% static 'js/edit_button.js' %}"></script>
+    <script src="{% static 'js/confirmation_popup.js' %}"></script>
+</body>
 </html>
