@@ -1,15 +1,44 @@
+{% load static %}
+
 <!DOCTYPE html>
+<html lang="pt-br">
 <html>
+
 <head>
-    <title>{% if review %}Edit{% else %}Add{% endif %} Review</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if review %}Editar{% else %}Adicionar{% endif %} Review</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/review_form.css' %}">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
 </head>
 <body>
-    <h1>Add/Edit Review</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
-    <a href="{% url 'book-detail' book_pk %}">Back to Book Details</a>
+    <header>
+        <h1>BookVerse</h1>
+    
+        <div class="utilitarios">
+            <a href="{% url 'book-detail' book_pk %}">Detalhes</a>
+            <a href="{% url 'wishlist-list' %}">Lista de desejos</a>
+            <form action="{% url 'logout' %}" method="post" id="logout-form">
+                {% csrf_token %}
+                <button class="logout" type="submit">Sair</button>
+            </form>
+        </div>
+    </header>
+
+    <main>
+        <h2>{% if review %}Editar{% else %}Adicionar{% endif %} Review</h2>
+        <div class="form">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="adicionar" type="submit">Enviar</button>
+            </form>
+        </div>
+    </main>
 </body>
 </html>

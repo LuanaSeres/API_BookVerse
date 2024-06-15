@@ -34,23 +34,7 @@ header h1 {
   color: black;
 }
 
-.logout {
-  width: 70px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  box-sizing: border-box;
-  background-color: rgb(126, 147, 252);
-  color: black;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.logout:hover {
-  background-color: #687AD4;
-}
-
-main {
+.text {
   margin-left: 20px;
 }
 
@@ -73,8 +57,7 @@ main {
   font-weight: bold;
 }
 
-input[type="text"],
-textarea {
+input[type="text"], input[type="email"], input[type="password"] {
   width: 80%;
   padding: 10px;
   margin-right: 20px;
@@ -85,7 +68,7 @@ textarea {
   box-sizing: border-box;
 }
 
-.adicionar {
+button {
   width: 150px;
   margin-bottom: 10px;
   padding: 10px;
@@ -96,8 +79,9 @@ textarea {
   color: black;
   cursor: pointer;
   font-weight: bold;
+  font-family: "Nunito", sans-serif;
 }
 
-.adicionar:hover {
+button:hover {
   background-color: #687AD4;
 }

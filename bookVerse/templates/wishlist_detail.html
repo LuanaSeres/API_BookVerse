@@ -1,19 +1,46 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ wishlist_item.title }}</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/wishlist_detail.css' %}">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+    rel="stylesheet">
 </head>
 
 <body>
-  <h1>Wishlist Item: {{ wishlist_item.title }}</h1>
-  <p>Author: {{ wishlist_item.author }}</p>
-  <p>Genre: {{ wishlist_item.genre }}</p>
-  <p>Description: {{ wishlist_item.description }}</p>
-  <p>Priority: {{ wishlist_item.priority}}</p>
-  <a href="{% url 'wishlist-update' wishlist_item.id %}">Edit</a>
-  <a href="{% url 'wishlist-delete' wishlist_item.id %}">Delete</a>
-  <a href="{% url 'wishlist-list' %}">Back to list</a>
+  <header>
+    <h1>BookVerse</h1>
+  
+    <div class="utilitarios">
+      <a href="{% url 'book-list' %}">Biblioteca</a>
+      <a href="{% url 'wishlist-list' %}">Lista de desejos</a>
+      <form action="{% url 'logout' %}" method="post" id="logout-form">
+        {% csrf_token %}
+        <button class="logout" type="submit">Sair</button>
+      </form>
+    </div>
+  </header>
+
+  <main>
+    <h1>{{ wishlist_item.title }}</h1>
+    <p>Autor: {{ wishlist_item.author }}</p>
+    <p>Genero: {{ wishlist_item.genre }}</p>
+    <p>Descrição: {{ wishlist_item.description }}</p>
+    <p>Prioridade: {{ wishlist_item.priority}}</p>
+    <a class="editar" href="{% url 'wishlist-update' wishlist_item.id %}">Editar</a>
+    <form method="post" style="display: inline;">
+      {% csrf_token %}
+      <button class="botao" type="submit" onclick="return confirm('Deseja deletar esse livro?')">Deletar</button>
+    </form>
+  </main>
 </body>
 
 </html>

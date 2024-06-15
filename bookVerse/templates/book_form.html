@@ -37,10 +37,8 @@
         <div class="form">
             <form method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
-                <div class="botao">
-                    <button type="submit">{% if book %}Editar{% else %}Adicionar{% endif %}</button>
-                </div>
+                {{ form.as_p }}                
+                <button class="adicionar" type="submit">{% if book %}Editar{% else %}Adicionar{% endif %}</button>
             </form>
         </div>
     </main>
