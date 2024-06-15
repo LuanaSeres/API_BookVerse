@@ -29,31 +29,32 @@ class ReadingStatusCreateView(View):
         return render(request, 'reading_status_form.html', {'form': form})
 
 class UpdateReadingStatusView(LoginRequiredMixin, View):
-    def post(self, request):
-        status = request.POST.get('status')
-        progress = request.POST.get('progress')
-        book_id = request.POST.get('book_id')
+    def get(self, request, book_id):
+        book = get_object_or_404(Book, pk=book_id)
+        reading_status, _ = ReadingStatus.objects.get_or_create(user=request.user, book=book)
+        form = ReadingStatusForm(instance=reading_status)
+        reviews = book.reviews.all()
+        return render(request, 'book_detail.html', {
+            'book': book,
+            'reading_status': reading_status,
+            'reviews': reviews,
+            'form': form,
+        })
 
-        if not progress:
-            book = get_object_or_404(Book, pk=book_id)
-            reading_status = ReadingStatus.objects.filter(book=book, user=request.user).first()
-            reviews = book.reviews.all()
-
-            error_message = "Por favor, preencha o campo de progresso."
-
-            return render(request, 'book_detail.html', {
-                'book': book,
-                'reading_status': reading_status,
-                'reviews': reviews,
-                'error_message': error_message,
-            })
-
-        reading_status, _ = ReadingStatus.objects.get_or_create(user=request.user, book_id=book_id)
-        reading_status.status = status
-        reading_status.progress = int(progress)
-        reading_status.save()
-
-        return redirect('book-detail', pk=book_id)
+    def post(self, request, book_id):
+        book = get_object_or_404(Book, pk=book_id)
+        reading_status, _ = ReadingStatus.objects.get_or_create(user=request.user, book=book)
+        form = ReadingStatusForm(request.POST, instance=reading_status)
+        if form.is_valid():
+            form.save()
+            return redirect('book-detail', pk=book_id)
+        reviews = book.reviews.all()
+        return render(request, 'book_detail.html', {
+            'book': book,
+            'reading_status': reading_status,
+            'reviews': reviews,
+            'form': form,
+        })
 
 class ReadingStatusDeleteView(View):
     def get(self, request, pk):
