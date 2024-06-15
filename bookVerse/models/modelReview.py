@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 from django.db import models
 from ..models.modelBook import Book
@@ -6,7 +7,7 @@ from ..models.modelBook import Book
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.PositiveIntegerField()
+    rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     comment = models.TextField()
 
     def __str__(self):
