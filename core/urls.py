@@ -6,8 +6,9 @@ from bookVerse.views.viewReview import *
 from bookVerse.views.viewWishList import *
 from bookVerse.views.viewReadingStatus import *
 from bookVerse.views.viewUser import *
+from django.conf.urls.i18n import i18n_patterns
 
-urlpatterns = [
+urlpatterns = i18n_patterns(
     path('admin/', admin.site.urls),
 
     # Login
@@ -45,4 +46,4 @@ urlpatterns = [
     path('users/generate/', UserGenerate.as_view(), name='user_generate'),
     path('users/edit/<int:id>/', UserEdit.as_view(), name='user_edit'),
     path('users/delete/<int:id>/', UserDelete.as_view(), name='user_delete'),
-]
+)
