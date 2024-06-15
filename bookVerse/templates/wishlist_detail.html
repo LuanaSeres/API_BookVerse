@@ -34,13 +34,25 @@
     <p>Autor: {{ wishlist_item.author }}</p>
     <p>Genero: {{ wishlist_item.genre }}</p>
     <p>Descrição: {{ wishlist_item.description }}</p>
-    <p>Prioridade: {{ wishlist_item.priority}}</p>
-    <a class="editar" href="{% url 'wishlist-update' wishlist_item.id %}">Editar</a>
-    <form method="post" style="display: inline;">
+    <p>Prioridade: {{ wishlist_item.priority }}</p>
+    <button class="editar" data-url="{% url 'wishlist-update' wishlist_item.id %}">Editar</button> 
+    <form action="{% url 'wishlist-delete' wishlist_item.id %}" method="post" style="display: inline;" class="delete-form" data-return-url="{% url 'wishlist-list' %}">
       {% csrf_token %}
-      <button class="botao" type="submit" onclick="return confirm('Deseja deletar esse livro?')">Deletar</button>
+      <button class="botao delete-btn" type="button">Deletar</button>
     </form>
   </main>
+
+  <!-- Popup de confirmação -->
+  <div id="confirmation-popup" class="popup">
+    <div class="popup-content">
+      <p>Tem certeza que deseja deletar?</p>
+      <button id="confirm-delete-btn">Sim</button>
+      <button id="cancel-delete-btn">Não</button>
+    </div>
+  </div>
+
+  <script src="{% static 'js/edit_button.js' %}"></script>
+  <script src="{% static 'js/confirmation_popup.js' %}"></script>
 </body>
 
 </html>
