@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from ..models.modelReadingStatus import ReadingStatus
+from ..models.modelBook import Book
 from ..forms import ReadingStatusForm
 from ..repository import ReadingStatusRepository
 
@@ -33,9 +34,23 @@ class UpdateReadingStatusView(LoginRequiredMixin, View):
         progress = request.POST.get('progress')
         book_id = request.POST.get('book_id')
 
+        if not progress:
+            book = get_object_or_404(Book, pk=book_id)
+            reading_status = ReadingStatus.objects.filter(book=book, user=request.user).first()
+            reviews = book.reviews.all()
+
+            error_message = "Por favor, preencha o campo de progresso."
+
+            return render(request, 'book_detail.html', {
+                'book': book,
+                'reading_status': reading_status,
+                'reviews': reviews,
+                'error_message': error_message,
+            })
+
         reading_status, _ = ReadingStatus.objects.get_or_create(user=request.user, book_id=book_id)
         reading_status.status = status
-        reading_status.progress = progress
+        reading_status.progress = int(progress)
         reading_status.save()
 
         return redirect('book-detail', pk=book_id)
