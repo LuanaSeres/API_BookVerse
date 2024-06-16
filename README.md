@@ -1,6 +1,6 @@
 # BookVerse
 
-BookVerse é uma API desenvolvida em Python usando Django Rest Framework no padrão Model View Template. É uma biblioteca pessoal onde você pode gerenciar seus livros, adicionar reviews e manter uma lista de desejos.
+A API BookVerse é uma aplicação desenvolvida em Python utilizando o Django Rest Framework, estruturada no padrão Model View Template (MVT). Esta API serve como uma biblioteca pessoal onde os usuários podem gerenciar sua coleção de livros, adicionar reviews, e manter uma lista de desejos.
 
 ## Funcionalidades
 
@@ -20,7 +20,7 @@ BookVerse é uma API desenvolvida em Python usando Django Rest Framework no padr
 1. Clone o repositório:
     ```bash
     git clone https://github.com/LuanaSeres/API_BookVerse.git
-    cd BookVerse
+    cd API_BookVerse
     ```
 
 2. Crie e ative o ambiente virtual:
@@ -69,26 +69,33 @@ Após iniciar o servidor, acesse `http://127.0.0.1:8000/` em seu navegador para 
 
 ## Exemplos de Uso
 
-Na tela Inicial clique em Cadastrar-se
-![Tela Inicial](img/inicial.png)
+- Na tela Inicial clique em Cadastrar-se
 
-Crie seu usuário
-![Tela Criar Usuário](img/criaruser.png)
+    ![Tela Inicial](img/inicial.png)
 
-Faça seu login
-![Tela login](img/login.png)
+- Crie seu usuário
 
-Na página inicial clique em "Adicionar novo livro"
-![Tela home](img/home.png)
+    ![Tela Criar Usuário](img/criaruser.png)
 
-Adicione as informações
-![Tela addLivro](img/addLivro.png)
+- Faça seu login
 
-Na página de detalhes você pode adicionar status de leitura, editar informações e adicionar reviews
-![Tela detalhes](img/detalhes.png)
-![Tela addLivro](img/review.png)
+    ![Tela login](img/login.png)
 
-Também temos a tela da Lista de desejos
-![Tela desejos](img/listadedesejos.png)
+- Na página inicial clique em "Adicionar novo livro"
 
-O processo de adicionar review e de adicionar livros na lista de desejos é semelhante ao de adicionar um novo livro
+    ![Tela home](img/home.png)
+
+- Adicione as informações
+
+    ![Tela addLivro](img/addLivro.png)
+
+- Na página de detalhes você pode adicionar status de leitura, editar informações e adicionar reviews
+
+    ![Tela detalhes](img/detalhes.png)
+    ![Tela addLivro](img/review.png)
+
+- Também temos a tela da Lista de desejos
+
+    ![Tela desejos](img/listadedesejos.png)
+
+- O processo de adicionar review e de adicionar livros na lista de desejos é semelhante ao de adicionar um novo livro
