@@ -1,6 +1,7 @@
 from django.views import View
 from ..forms import UserForm
 from ..repository import UserRepository
+from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -31,6 +32,36 @@ class UserGenerate(View):
                 login(request, user)  # Faz login do usuário
             return redirect('book-list')
         return render(request, "user_generate.html", {'form': form})  # Se o formulário não for válido, renderiza novamente a template com o formulário
+
+
+class UserList(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        repository = UserRepository()
+        users = repository.get_all()
+        return render(request, "user_list.html", {'users': users})
+
+class UserEdit(View):
+    @method_decorator(login_required)
+    def get(self, request, id):
+        repository = UserRepository()
+        user = repository.get_by_id(id)
+        user_form = UserForm(initial={'username': user.username, 'email': user.email})
+        return render(request, "user_edit.html", {"form": user_form, "id": id})
+
+    @method_decorator(login_required)
+    def post(self, request, id):
+        user_form = UserForm(request.POST)
+        if user_form.is_valid():
+            user_data = {
+                'username': user_form.cleaned_data['username'],
+                'email': user_form.cleaned_data['email'],
+                'password': user_form.cleaned_data['password']
+            }
+            repository = UserRepository()
+            repository.update(user_data, id)
+            return redirect('user_list')
+        return render(request, "user_edit.html", {"form": user_form, "id": id})
 
 # Define uma view baseada em classe para login de usuário
 class LoginView(View):

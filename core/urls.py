@@ -41,5 +41,7 @@ urlpatterns = i18n_patterns(
     path('reading-status/update/', UpdateReadingStatusView.as_view(), name='reading-status-update'),
 
     # User
+    path('users/', UserList.as_view(), name='user_list'),
     path('users/generate/', UserGenerate.as_view(), name='user_generate'),
+    path('users/edit/<int:id>/', UserEdit.as_view(), name='user_edit'),
 )
