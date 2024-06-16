@@ -2,7 +2,7 @@ from .models.modelBook import Book
 from .models.modelReview import Review
 from .models.modelWishList import Wishlist
 from .models.modelReadingStatus import ReadingStatus
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User 
 
 # Repositório para operações relacionadas ao modelo Book
 class BookRepository:
