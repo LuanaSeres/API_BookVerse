@@ -39,11 +39,7 @@ urlpatterns = i18n_patterns(
     path('reading-status/create/', ReadingStatusCreateView.as_view(), name='reading-status-create'),
     path('reading-status/<int:pk>/', ReadingStatusDetailView.as_view(), name='reading-status-detail'),
     path('reading-status/update/', UpdateReadingStatusView.as_view(), name='reading-status-update'),
-    path('reading-status/<int:pk>/delete/', ReadingStatusDeleteView.as_view(), name='reading-status-delete'),
 
     # User
-    path('users/', UserList.as_view(), name='user_list'),
     path('users/generate/', UserGenerate.as_view(), name='user_generate'),
-    path('users/edit/<int:id>/', UserEdit.as_view(), name='user_edit'),
-    path('users/delete/<int:id>/', UserDelete.as_view(), name='user_delete'),
 )
