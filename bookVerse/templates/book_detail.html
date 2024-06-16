@@ -1,57 +1,116 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ book.title }}</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/book_detail.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
-    <h1>{{ book.title }}</h1>
-    <p>Author: {{ book.author }}</p>
-    <p>Genre: {{ book.genre }}</p>
-    <p>Description: {{ book.description }}</p>
-
-    {% if reading_status %}
-    <p>Reading Status: {{ reading_status.status }}</p>
-    <p>Progress: {{ reading_status.progress }}%</p>
-    {% else %}
-    <p>Reading Status: Not Set</p>
-    {% endif %}
-
-    <form action="{% url 'reading-status-update' %}" method="post">
-        {% csrf_token %}
-        <select name="status">
-            <option value="read">Read</option>
-            <option value="unread">Unread</option>
-            <option value="reading">Reading</option>
-        </select>
-        <input type="number" name="progress" min="0" max="100" placeholder="Progress (%)">
-        <input type="hidden" name="book_id" value="{{ book.id }}">
-        <button type="submit">Save Reading Status</button>
-    </form>
-
-    <br><br>
-    <a href="{% url 'book-update' book.pk %}">Edit</a>
-    <form action="{% url 'book-delete' book.pk %}" method="post" style="display: inline;">
-        {% csrf_token %}
-        <button type="submit" onclick="return confirm('Are you sure you want to delete this book?')">Delete</button>
-    </form>
-    <a href="{% url 'book-list' %}">Back to Book List</a>
-
-    <h2>Reviews</h2>
-
-    {% for review in reviews %}
-    <div>
-        <p><strong>{{ review.user.username }}</strong></p>
-        <p>Rating: {{ review.rating }}</p>
-        <p>{{ review.comment }}</p>
-        <p><small>Reviewed on {{ review.created_at }}</small></p>
-        <a href="{% url 'review-edit' review.pk %}">Edit</a>
-        <form action="{% url 'review-delete' review.pk %}" method="post" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit">Delete</button>
-        </form>
-    </div>
-    {% endfor %}
+    <header>
+        <h1>BookVerse</h1>
     
-    <a href="{% url 'review-add' book.pk %}">Add a Review</a>
+        <div class="utilitarios">
+            <a href="{% url 'book-list' %}">Biblioteca</a>
+            <a href="{% url 'wishlist-list' %}">Lista de desejos</a>
+            <form action="{% url 'logout' %}" method="post" id="logout-form">
+                {% csrf_token %}
+                <button class="logout" type="submit">Sair</button>
+            </form>
+        </div>
+    </header>
+
+    <main>
+        <div class="detalhes">
+            <h1>{{ book.title }}</h1>
+            <p>Autor: {{ book.author }}</p>
+            <p>Gênero: {{ book.genre }}</p>
+            <p>Descrição: {{ book.description }}</p>
+        
+            {% if reading_status %}
+            <p>Status da Leitura: {{ reading_status.status }}</p>
+            <p>Progresso: {{ reading_status.progress }}%</p>
+            {% else %}
+            <p>Status da Leitura: Sem informação</p>
+            {% endif %}
+        
+            <br>
+
+            <button class="editar" data-url="{% url 'book-update' book.pk %}">Editar</button>  
+            
+            <form action="{% url 'book-delete' book.pk %}" method="post" style="display: inline;" class="delete-form" data-return-url="{% url 'book-list' %}">
+                {% csrf_token %}
+                <button type="button" class="delete-btn">Deletar</button>
+            </form>
+        
+            <br><br>
+
+            <form action="{% url 'reading-status-update' %}" method="post">
+                {% csrf_token %}
+                <select name="status">
+                    <option value="Lido">Lido</option>
+                    <option value="Não Lido">Não Lido</option>
+                    <option value="Lendo">Lendo</option>
+                </select>
+                <input type="number" name="progress" min="0" max="100" placeholder="Progresso (%)">
+                <input type="hidden" name="book_id" value="{{ book.id }}">
+                <br>
+                <button type="submit">Salvar</button>
+            </form>
+
+            {% if error_message %}
+            <div class="errors">
+                <p>{{ error_message }}</p>
+            </div>
+            {% endif %}
+
+        </div>
+
+        <div>
+            <h2>Reviews</h2>
+
+            <button class="editar" data-url="{% url 'review-add' book.pk %}">Adicionar Review</button>
+
+            <div class="espaco">
+                {% for review in reviews %}
+                <div class="review">       
+                    <div class="card">
+                        <div class="conteudo">
+                            <h3>Nota: {{ review.rating }}</h3>
+                            <p>{{ review.comment }}</p>
+                        </div>
+                        <button class="editar" data-url="{% url 'review-edit' review.pk %}">Editar</button>
+                        <form action="{% url 'review-delete' review.pk %}" method="post" style="display:inline;" class="delete-form" data-return-url="">
+                            {% csrf_token %}
+                            <button type="button" class="delete-btn">Deletar</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+
+    <!-- Popup de confirmação -->
+    <div id="confirmation-popup" class="popup">
+        <div class="popup-content">
+            <p>Tem certeza que deseja deletar?</p>
+            <button id="confirm-delete-btn">Sim</button>
+            <button id="cancel-delete-btn">Não</button>
+        </div>
+    </div>
+
+    <script src="{% static 'js/edit_button.js' %}"></script>
+    <script src="{% static 'js/confirmation_popup.js' %}"></script>
 </body>
 </html>

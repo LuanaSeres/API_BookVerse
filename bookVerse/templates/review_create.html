@@ -7,9 +7,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criar Usuário</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/user_generate.css' %}">
+    <title>Adicionar Review</title>
 
+    <link rel="stylesheet" type="text/css" href="{% static 'css/review_form.css' %}">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
@@ -20,17 +21,22 @@
         <h1>BookVerse</h1>
     
         <div class="utilitarios">
-            <a href="{% url 'user_list' %}">Voltar a página inicial</a>
+            <a href="{% url 'book-detail' book_pk %}">Detalhes</a>
+            <a href="{% url 'wishlist-list' %}">Lista de desejos</a>
+            <form action="{% url 'logout' %}" method="post" id="logout-form">
+                {% csrf_token %}
+                <button class="logout" type="submit">Sair</button>
+            </form>
         </div>
     </header>
 
     <main>
-        <h2 class="text">Criar Usuário</h2>
+        <h2>Adicionar Review</h2>
         <div class="form">
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit">Registrar</button>
+                <button class="adicionar" type="submit">Adicionar</button>
             </form>
         </div>
     </main>

@@ -27,7 +27,7 @@ class WishlistDetailView(View):
 class WishlistCreateView(View):
     def get(self, request):
         form = WishlistForm()
-        return render(request, 'wishlist_form.html', {'form': form})
+        return render(request, 'wishlist_create.html', {'form': form})
 
     def post(self, request):
         form = WishlistForm(request.POST)
@@ -37,7 +37,7 @@ class WishlistCreateView(View):
             data['user'] = user
             WishlistRepository.create_wishlist_item(data)
             return redirect('wishlist-list')
-        return render(request, 'wishlist_form.html', {'form': form})
+        return render(request, 'wishlist_create.html', {'form': form})
 
 
 
@@ -46,7 +46,7 @@ class WishlistUpdateView(View):
     def get(self, request, pk):
         wishlist_item = get_object_or_404(Wishlist, pk=pk)
         form = WishlistForm(instance=wishlist_item)
-        return render(request, 'wishlist_form.html', {'form': form})
+        return render(request, 'wishlist_update.html', {'form': form})
 
     def post(self, request, pk):
         wishlist_item = get_object_or_404(Wishlist, pk=pk)
@@ -55,14 +55,10 @@ class WishlistUpdateView(View):
             updated_data = form.cleaned_data
             WishlistRepository.update_wishlist_item(pk, updated_data)
             return redirect('wishlist-detail', pk=pk)
-        return render(request, 'wishlist_form.html', {'form': form})
+        return render(request, 'wishlist_update.html', {'form': form})
 
 
 class WishlistDeleteView(View):
-    def get(self, request, pk):
-        wishlist_item = WishlistRepository.get_wishlist_item_by_id(pk)
-        return render(request, 'wishlist_confirm_delete.html', {'wishlist_item': wishlist_item})
-
     def post(self, request, pk):
         WishlistRepository.delete_wishlist_item(pk)
         return redirect('wishlist-list')

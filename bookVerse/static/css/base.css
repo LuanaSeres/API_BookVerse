@@ -1,0 +1,58 @@
+body {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  display: flex;
+  justify-content: center;
+  background: #D2D9FC;
+  margin-top: 9%;
+}
+
+
+header {
+  background-color: rgb(126, 147, 252);
+  padding: 5px;
+  text-align: center;
+  padding: 30px;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+
+.cadastro {
+  margin-top: 130px;
+}
+
+a {
+  color: black;
+}
+
+.login-form {
+  margin: 0;
+  width: 300px;
+  padding: 30px;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+  background-color: white;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"],
+.login-form button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+.login-form button {
+  background-color: rgb(126, 147, 252);
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.login-form button:hover {
+  background-color: #687AD4;
+}

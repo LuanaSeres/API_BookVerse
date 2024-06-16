@@ -16,7 +16,7 @@ class BookListView(View):
 class BookCreateView(View):
     def get(self, request):
         form = BookForm()
-        return render(request, 'book_form.html', {'form': form})
+        return render(request, 'book_create.html', {'form': form})
 
     def post(self, request):
         form = BookForm(request.POST)
@@ -25,7 +25,7 @@ class BookCreateView(View):
             book.owner = request.user
             book.save()
             return redirect('book-detail', pk=book.pk)
-        return render(request, 'book_form.html', {'form': form})
+        return render(request, 'book_create.html', {'form': form})
 
 class BookDetailView(View):
     def get(self, request, pk):
@@ -41,7 +41,7 @@ class BookUpdateView(View):
     def get(self, request, pk):
         book = Book.objects.get(pk=pk)
         form = BookForm(instance=book)
-        return render(request, 'book_form.html', {'form': form})
+        return render(request, 'book_update.html', {'form': form})
 
     def post(self, request, pk):
         book = Book.objects.get(pk=pk)
@@ -49,14 +49,10 @@ class BookUpdateView(View):
         if form.is_valid():
             form.save()
             return redirect('book-detail', pk=pk)
-        return render(request, 'book_form.html', {'form': form})
+        return render(request, 'book_update.html', {'form': form})
 
 @method_decorator(login_required, name='dispatch')
 class BookDeleteView(View):
-    def get(self, request, pk):
-        book = Book.objects.get(pk=pk)
-        return render(request, 'book_confirm_delete.html', {'book': book})
-
     def post(self, request, pk):
         book = Book.objects.get(pk=pk)
         book.delete()

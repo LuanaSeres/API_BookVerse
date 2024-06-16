@@ -1,0 +1,102 @@
+body {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  margin: 0;
+}
+
+header {
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px;
+  padding-left: 15px;
+  align-items: center;
+  box-shadow: 0px 0px 8px 0px rgb(126, 147, 252);
+  border-radius: 0px 0px 10px 10px;
+}
+
+header h1 {
+  margin: 0;
+}
+
+.utilitarios {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 35%;
+}
+
+.utilitarios a {
+  text-decoration: none;
+  color: black;
+}
+
+.logout {
+  width: 70px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  box-sizing: border-box;
+  background-color: rgb(126, 147, 252);
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.logout:hover {
+  background-color: #687AD4;
+}
+
+main {
+  margin-left: 20px;
+}
+
+.form {
+  width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.form p {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+}
+
+.form label {
+  width: 100%;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"], input[type="number"], textarea {
+  width: 80%;
+  padding: 10px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.adicionar {
+  width: 150px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  box-sizing: border-box;
+  background-color: rgb(126, 147, 252);
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.adicionar:hover {
+  background-color: #687AD4;
+}
