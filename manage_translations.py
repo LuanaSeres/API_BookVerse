@@ -1,18 +1,18 @@
 import polib
 import os
 
-# Caminho onde os arquivos de tradução serão salvos
+# Caminho onde os arquivos de tradução serão salvos 
 locale_path = 'locale/pt_BR/LC_MESSAGES/'
 os.makedirs(locale_path, exist_ok=True)
 
-# Criar ou carregar um arquivo .po existente
+# Criar ou carregar um arquivo .po existente 
 po_filepath = os.path.join(locale_path, 'django.po')
 if os.path.exists(po_filepath):
     po = polib.pofile(po_filepath)
 else:
     po = polib.POFile()
 
-# Adicionar metadados se o arquivo .po for novo
+# Adicionar metadados se o arquivo .po for novo 
 if not po.metadata:
     po.metadata = {
         'Project-Id-Version': '1.0',
@@ -27,7 +27,7 @@ if not po.metadata:
         'Content-Transfer-Encoding': '8bit',
     }
 
-# Adicionar entradas de tradução
+# Adicionar entradas de tradução 
 entries = [
     {'msgid': 'Title', 'msgstr': 'Título'},
     {'msgid': 'Author', 'msgstr': 'Autor'},
@@ -48,14 +48,14 @@ entries = [
 ]
 
 for entry in entries:
-    # Verificar se a entrada já existe
+    # Verificar se a entrada já existe 
     if not po.find(entry['msgid']):
         po.append(polib.POEntry(msgid=entry['msgid'], msgstr=entry['msgstr']))
 
-# Salvar o arquivo .po
+# Salvar o arquivo .po 
 po.save(po_filepath)
 
-# Compilar o arquivo .po para .mo
+# Compilar o arquivo .po para .mo 
 mo_filepath = os.path.join(locale_path, 'django.mo')
 po.save_as_mofile(mo_filepath)
 
