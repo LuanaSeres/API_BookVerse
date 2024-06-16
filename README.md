@@ -51,17 +51,6 @@ BookVerse é uma API desenvolvida em Python usando Django Rest Framework no padr
 
 ## Uso
 
-Na tela Inicial clique em Cadastrar-se
-![Tela Inicial](img/inicial.png)
-
-Crie seu usuário
-![Tela Criar Usuário](img/criaruser.png)
-
-Faça seu login
-![Tela login](img/login.png)
-
-
-
 Após iniciar o servidor, acesse `http://127.0.0.1:8000/` em seu navegador para interagir com a aplicação.
 
 1. No seu primeiro acesso, cadastre-se para poder efetuar o login.
@@ -80,3 +69,26 @@ Após iniciar o servidor, acesse `http://127.0.0.1:8000/` em seu navegador para 
 
 ## Exemplos de Uso
 
+Na tela Inicial clique em Cadastrar-se
+![Tela Inicial](img/inicial.png)
+
+Crie seu usuário
+![Tela Criar Usuário](img/criaruser.png)
+
+Faça seu login
+![Tela login](img/login.png)
+
+Na página inicial clique em "Adicionar novo livro"
+![Tela home](img/home.png)
+
+Adicione as informações
+![Tela addLivro](img/addLivro.png)
+
+Na página de detalhes você pode adicionar status de leitura, editar informações e adicionar reviews
+![Tela detalhes](img/detalhes.png)
+![Tela addLivro](img/review.png)
+
+Também temos a tela da Lista de desejos
+![Tela desejos](img/listadedesejos.png)
+
+O processo de adicionar review e de adicionar livros na lista de desejos é semelhante ao de adicionar um novo livro
