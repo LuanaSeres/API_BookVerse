@@ -51,6 +51,17 @@ BookVerse é uma API desenvolvida em Python usando Django Rest Framework no padr
 
 ## Uso
 
+Na tela Inicial clique em Cadastrar-se
+![Tela Inicial](img/inicial.png)
+
+Crie seu usuário
+![Tela Criar Usuário](img/criaruser.png)
+
+Faça seu login
+![Tela login](img/login.png)
+
+
+
 Após iniciar o servidor, acesse `http://127.0.0.1:8000/` em seu navegador para interagir com a aplicação.
 
 1. No seu primeiro acesso, cadastre-se para poder efetuar o login.
